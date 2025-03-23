@@ -2,7 +2,7 @@
 
 ## About
 
-Technically a random event driven text-based game.
+A random event driven text-based game.
 
 
 Random events are defined in [YAML files](static/rulesets/default). Therefore,
