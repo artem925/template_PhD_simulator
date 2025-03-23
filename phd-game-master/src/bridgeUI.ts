@@ -26,20 +26,41 @@ export class TemplateUIProxy implements GuiActionProxy {
     }
     
     private setupMessageContainer(): void {
+        console.log("Setting up message container...");
         // Create message container in the game container
         const gameContainer = document.getElementById('game-container');
         if (gameContainer) {
-            // Clear any existing content
-            gameContainer.innerHTML = '';
-            // Create message window
+            console.log("Found game container");
+            
+            // Remove any existing message window if it exists
+            const existingMessageWindow = document.getElementById('message-window');
+            if (existingMessageWindow) {
+                existingMessageWindow.remove();
+            }
+            
+            // Create message window with very clear styling
             const messageWindow = document.createElement('div');
             messageWindow.id = 'message-window';
             messageWindow.className = 'message-window';
+            messageWindow.style.backgroundColor = 'rgba(0,0,0,0.9)';
+            messageWindow.style.color = 'white';
+            messageWindow.style.padding = '20px';
+            messageWindow.style.margin = '20px';
+            messageWindow.style.borderRadius = '10px';
+            messageWindow.style.position = 'absolute';
+            messageWindow.style.top = '50%';
+            messageWindow.style.left = '50%';
+            messageWindow.style.transform = 'translate(-50%, -50%)';
+            messageWindow.style.width = '80%';
+            messageWindow.style.maxWidth = '600px';
+            messageWindow.style.zIndex = '1000';
+            messageWindow.style.border = '3px solid red'; // Very visible for debugging
             
             // Create message text container
             const messageText = document.createElement('div');
             messageText.id = 'message-text';
             messageText.className = 'message-text';
+            messageText.innerHTML = "<p>Welcome to PhD Simulator!</p>"; // Initial content
             
             // Create choices container
             const choicesContainer = document.createElement('div');
@@ -50,69 +71,15 @@ export class TemplateUIProxy implements GuiActionProxy {
             messageWindow.appendChild(messageText);
             messageWindow.appendChild(choicesContainer);
             gameContainer.appendChild(messageWindow);
-            
-            // Add a placeholder message to confirm the UI is working
-            messageText.innerHTML = "Game is loading... Please wait.";
-            console.log("Game UI elements created");
-
-            // Add styles
-            const style = document.createElement('style');
-            style.textContent = `
-                .message-window {
-                    background-color: rgba(15, 52, 96, 0.95);
-                    border: 2px solid #e94560;
-                    box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
-                    color: white;
-                    padding: 20px;
-                    margin: 20px;
-                    border-radius: 10px;
-                    max-height: 80%;
-                    overflow-y: auto;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 80%;
-                    max-width: 600px;
-                    z-index: 100;
-                }
-                .message-text {
-                    margin-bottom: 20px;
-                    line-height: 1.5;
-                }
-                .choices-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-                .choice-button {
-                    background: linear-gradient(135deg, #283c86 0%, #45a247 100%);
-                    border: 2px solid #fff;
-                    border-radius: 8px;
-                    color: #fff;
-                    font-family: 'Orbitron', sans-serif;
-                    font-size: 16px;
-                    text-align: center;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                }
-                .choice-button:hover {
-                    background: linear-gradient(135deg, #45a247 0%, #283c86 100%);
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                }
-                .confirm-button {
-                    background: linear-gradient(135deg, #e94560 0%, #533483 100%);
-                    width: 50%;
-                    margin: 20px auto 0;
-                }
-            `;
-            document.head.appendChild(style);
+        
+            console.log("Message container setup complete");
+        } else {
+            console.error("Game container not found!");
         }
     }
     
     displayMessage(message: string, confirm: string, icon?: string, fx?: string): Promise<void> {
+        console.log("DisplayMessage called:", message);
         const messageText = document.getElementById('message-text');
         const choicesContainer = document.getElementById('choices-container');
         
@@ -221,6 +188,7 @@ export class TemplateUIProxy implements GuiActionProxy {
     
     // Update HUD with game status
     updateHUD(gameEngine: GameEngine): void {
+        console.log("UpdateHUD called");
         const hud = document.getElementById('hud');
         if (hud) {
             // Get values from the game engine

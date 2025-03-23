@@ -308,3 +308,5 @@ export class GameActionProxy implements GuiActionProxy {
     }
 
 }
+
+export { EndGameState };
