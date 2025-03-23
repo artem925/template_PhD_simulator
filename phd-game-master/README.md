@@ -8,7 +8,6 @@ A random event driven text-based game.
 Random events are defined in [YAML files](static/rulesets/default). Therefore,
 the game is easily moddable,
 
-Not actively maintained.
 
 ## Build and Play Locally
 
