@@ -274,6 +274,7 @@ class TemplateGameApp {
     private localizer: LocalizationDictionary;
     private config: AppConfig;
     private gameLoopActive: boolean = false;
+    private tickInProgress: boolean = false;
     
     constructor(config: AppConfig) {
         this.config = config;
@@ -357,28 +358,43 @@ class TemplateGameApp {
     }
     
     startGameLoop(): void {
+        // If already active, do nothing
+        if (this.gameLoopActive) return;
+        
         // Stop any existing game loop
         this.gameLoopActive = false;
+        this.tickInProgress = false;
         
         // Start a new game loop
         setTimeout(() => {
             this.gameLoopActive = true;
             this.gameTick();
-        }, 100);
+        }, 200);
     }
     
     private async gameTick(): Promise<void> {
         if (!this.gameLoopActive) return;
         
+        if (this.tickInProgress) {
+            // Schedule another attempt later
+            setTimeout(() => this.gameTick(), 200);
+            return;
+        }
+        
+        this.tickInProgress = true;
         try {
             await this.gameEngine.tick();
             this.uiProxy.updateHUD(this.gameEngine);
         } catch (error) {
             console.error("Error in game tick:", error);
+        } finally {
+            this.tickInProgress = false;
         }
         
         // Schedule next tick
-        setTimeout(() => this.gameTick(), 50);
+        if (this.gameLoopActive) {
+            setTimeout(() => this.gameTick(), 200);
+        }
     }
     
     private handleGameEnd(event: GameEndEvent): void {
