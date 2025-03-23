@@ -6,30 +6,6 @@ import { downloadAndParse } from './utils/network';
 import { load as loadYaml } from 'js-yaml';
 import queryString from 'query-string';
 
-// Debug utility function 
-function logToUI(message: string) {
-    console.log(message);
-    const debugElement = document.getElementById('debug-output');
-    if (debugElement) {
-        debugElement.innerHTML += `<div>${message}</div>`;
-    } else {
-        // Create debug element if it doesn't exist
-        const newDebugElement = document.createElement('div');
-        newDebugElement.id = 'debug-output';
-        newDebugElement.style.position = 'fixed';
-        newDebugElement.style.bottom = '10px';
-        newDebugElement.style.right = '10px';
-        newDebugElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
-        newDebugElement.style.color = 'white';
-        newDebugElement.style.padding = '10px';
-        newDebugElement.style.borderRadius = '5px';
-        newDebugElement.style.maxHeight = '200px';
-        newDebugElement.style.overflow = 'auto';
-        newDebugElement.style.zIndex = '1000';
-        newDebugElement.innerHTML = `<div>${message}</div>`;
-        document.body.appendChild(newDebugElement);
-    }
-}
 
 interface AppConfig extends GameConfig {
     languageFileUrl?: string;
@@ -56,7 +32,6 @@ class DirectUIProxy implements GuiActionProxy {
             return;
         }
         
-        logToUI("Initializing UI elements");
         
         // Find or create game container
         const gameContainer = document.getElementById('game-container');
@@ -108,7 +83,6 @@ class DirectUIProxy implements GuiActionProxy {
         this.messageWindow.appendChild(this.choicesContainer);
         gameContainer.appendChild(this.messageWindow);
         
-        logToUI("UI elements initialized");
     }
     
     displayMessage(message: string, confirm: string, icon?: string, fx?: string): Promise<void> {
@@ -284,13 +258,11 @@ class TemplateGameApp {
     }
     
     async initialize(): Promise<void> {
-        logToUI("Initializing game...");
         
         try {
             // Load language file
             if (this.config.languageFileUrl) {
                 await this.localizer.loadFrom(this.config.languageFileUrl);
-                logToUI("Language file loaded");
             }
             
             // Setup game end handler
@@ -300,7 +272,6 @@ class TemplateGameApp {
             
             // Load game data
             await this.gameEngine.loadGameData();
-            logToUI("Game data loaded");
             
             // Register our game with the window object
             this.registerWithWindow();
@@ -308,15 +279,12 @@ class TemplateGameApp {
             // Initialize the UI proxy
             this.uiProxy.ensureUIElements();
             
-            logToUI("Initialization complete");
         } catch (error) {
-            logToUI(`ERROR: ${error.message}`);
             console.error("Initialization error:", error);
         }
     }
     
     registerWithWindow(): void {
-        logToUI("Registering with window");
         
         // Call the initialization function if it exists
         if (typeof (window as any).initPhDInterface === 'function') {
@@ -331,28 +299,22 @@ class TemplateGameApp {
             displayChoices: (msg: string, choices: Array<[string, number]>) => this.uiProxy.displayChoices(msg, choices)
         };
         
-        logToUI("Game registered with window");
     }
     
     async start(newSeed = false): Promise<void> {
-        logToUI(`Starting game with ${newSeed ? 'new' : 'existing'} seed`);
-        
         try {
             // Ensure UI is ready
             this.uiProxy.ensureUIElements();
             
             // Start the game engine
             await this.gameEngine.start(newSeed);
-            logToUI("Game engine started");
             
             // Update HUD
             this.uiProxy.updateHUD(this.gameEngine);
             
             // Start game loop
             this.startGameLoop();
-            logToUI("Game loop started");
         } catch (error) {
-            logToUI(`ERROR starting game: ${error.message}`);
             console.error("Error starting game:", error);
         }
     }
@@ -398,7 +360,6 @@ class TemplateGameApp {
     }
     
     private handleGameEnd(event: GameEndEvent): void {
-        logToUI(`Game ended: ${event.state === EndGameState.Win ? 'Victory' : 'Defeat'}`);
         
         // Stop the game loop
         this.gameLoopActive = false;
@@ -426,7 +387,6 @@ class TemplateGameApp {
 
 // Initialize when the document is loaded
 document.addEventListener('DOMContentLoaded', async () => {
-    logToUI("DOMContentLoaded fired");
     
     try {
         // Parse configuration
@@ -453,7 +413,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const playButton = document.getElementById('play-button');
         if (playButton) {
             playButton.addEventListener('click', () => {
-                logToUI("Play button clicked directly");
                 // Switch to game screen directly
                 const startMenuScreen = document.getElementById('start-menu-screen');
                 const gameScreen = document.getElementById('game-screen');
@@ -472,10 +431,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }
-        
-        logToUI("App initialized");
     } catch (error) {
-        logToUI(`ERROR: ${error.message}`);
         console.error("Error initializing game:", error);
     }
 });
