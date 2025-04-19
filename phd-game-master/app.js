@@ -6,7 +6,7 @@ let app = express();
     
     // Add a route for the new game interface
     app.get('/new', (req, res) => {
-        res.sendFile('index-new.html', { root: './dist' });
+        res.sendFile('index-new.html', { root: __dirname + '/dist' });
     });
     
     app.listen(port, () => {
