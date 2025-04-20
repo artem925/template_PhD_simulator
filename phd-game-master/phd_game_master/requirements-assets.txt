@@ -1,0 +1,4 @@
+crewai[tools]      # brings DALL‑E + file helpers
+python-dotenv      # for .env loading
+requests           # simple HTTP for Freesound / ConfyUI
+Pillow             # image post‑processing

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Startup</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        /* Media Queries */
+        @media (aspect-ratio: 16/9) {
+            body { background-color: #111; }
+        }
+        @media (aspect-ratio: 3/2) {
+            body { background-color: #222; }
+        }
+        @media (aspect-ratio: 1/1) {
+            body { background-color: #333; }
+        }
+    </style>
+</head>
+<body>
+    <picture>
+        <source srcset="assets/images/startup_1024.webp" media="(min-width: 1024px)" type="image/webp">
+        <source srcset="assets/images/startup_512.webp" media="(min-width: 512px)" type="image/webp">
+        <source srcset="assets/images/startup_256.webp" media="(min-width: 256px)" type="image/webp">
+        <img src="assets/images/startup_1024.png" alt="Game Startup" />
+    </picture>
+
+    <script src="assets/audio/bgm/chiptune_loop"></script>
+    <script>
+        var tapSound = new Audio('assets/audio/sfx/tap.ogg');
+        var gameOverSound = new Audio('assets/audio/sfx/game_over.ogg');
+    </script>
+</body>
+</html>
