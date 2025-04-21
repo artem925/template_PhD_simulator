@@ -6,12 +6,8 @@ from __future__ import annotations
 
 from crewai import Task
 
-# Local import kept indirect to avoid circular‑import during module init
 from . import agents as ag
 
-# ---------------------------------------------------------------------------
-# Helper factory – cuts down boilerplate and guarantees expected_output exists
-# ---------------------------------------------------------------------------
 
 def T(desc: str, *, agent, output: str | None = None) -> Task:  # noqa: N802
     """Return a Task with a default expected_output if none supplied."""
@@ -21,9 +17,6 @@ def T(desc: str, *, agent, output: str | None = None) -> Task:  # noqa: N802
         expected_output=output or "Path(s) to generated asset(s) or confirmation log.",
     )
 
-# ---------------------------------------------------------------------------
-# IMAGE‑GENERATION TASKS
-# ---------------------------------------------------------------------------
 image_tasks: list[Task] = [
     T(
         "Generate startup screen art (logo + title); deliver 1024×1024 plus "
@@ -43,10 +36,6 @@ image_tasks: list[Task] = [
     ),
 ]
 
-# ---------------------------------------------------------------------------
-# AUDIO‑GENERATION TASKS
-# ---------------------------------------------------------------------------
-
 audio_tasks: list[Task] = [
     T(
         "Find a chiptune loop (CC0/CC‑BY) and prep 30‑second OGG, −14 LUFS.",
@@ -59,10 +48,6 @@ audio_tasks: list[Task] = [
         output="assets/audio/sfx/{tap,game_over}.ogg",
     ),
 ]
-
-# ---------------------------------------------------------------------------
-# INTEGRATION / BUILD‑PIPELINE TASKS
-# ---------------------------------------------------------------------------
 
 integration_tasks: list[Task] = [
     T(

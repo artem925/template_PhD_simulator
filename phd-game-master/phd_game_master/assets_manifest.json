@@ -1,0 +1,17 @@
+{
+    "assets": {
+        "images": {
+            "startup_1024": "assets/images/startup_1024.png",
+            "main_character": "assets/images/sprites/main_character.png",
+            "icon_pack": "assets/images/icons/play_settings_help_icons.png"
+        },
+        "audio": {
+            "bgm": "assets/audio/bgm/chiptune_loop",
+            "sfx": [
+                "assets/audio/sfx/tap.ogg",
+                "assets/audio/sfx/game_over.ogg"
+            ]
+        }
+    },
+    "license": "Free for personal and commercial use."
+}
